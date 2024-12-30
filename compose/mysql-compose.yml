@@ -1,0 +1,30 @@
+version: "3.4"
+services:
+  mysql:
+    image: mysql:8.0.40
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql-root
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    secrets:
+      - mysql-root
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+      restart_policy:
+        condition: none
+
+
+volumes:
+  mysql-data:
+    name: mysql-data
+
+secrets:
+  mysql-root:
+      name: mysql-root
